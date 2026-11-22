@@ -6,7 +6,7 @@
 # Supervisor and by CI.
 ARG BUILD_FROM=ghcr.io/home-assistant/base:3.22
 ARG BUILD_ARCH
-ARG CLIPROXYAPI_VERSION=v8.0.80
+ARG CLIPROXYAPI_VERSION=v8.1.0
 ARG BUILD_DATE=unknown
 
 # -----------------------------------------------------------------------------
