@@ -2,9 +2,10 @@ name: Image scan
 
 # Scans the built add-on image with Trivy: the Alpine packages from the Home
 # Assistant base image, and the Go modules and Go stdlib compiled into the
-# CLIProxyAPI binary. Report-only: findings go to Security -> Code scanning and
-# never fail the run, so an unfixed upstream CVE can't block the daily
-# upstream updates.
+# CLIProxyAPI binary. Also scans the Dockerfile for misconfigurations.
+# Report-only (HIGH and CRITICAL, fixable only): findings go to Security ->
+# Code scanning and never fail the run, so an unfixed upstream CVE can't
+# block the daily upstream updates.
 #
 # Kept out of ci.yaml because uploading results needs security-events: write,
 # which update-upstream.yaml's call into ci.yaml doesn't grant. Also runs daily:
@@ -67,15 +68,35 @@ jobs:
           image-ref: local/cliproxyapi:scan
           scanners: vuln
           ignore-unfixed: true
-          severity: MEDIUM,HIGH,CRITICAL
+          severity: HIGH,CRITICAL
+          exit-code: "0"
           limit-severities-for-sarif: true
           format: sarif
           output: trivy-results.sarif
 
+      - name: Scan Dockerfile configuration
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: cliproxyapi
+          skip-setup-trivy: true
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+          limit-severities-for-sarif: true
+          format: sarif
+          output: trivy-config.sarif
+
       # Fork PRs get a read-only token and can't upload.
-      - name: Upload to code scanning
+      - name: Upload image results to code scanning
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         uses: github/codeql-action/upload-sarif@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4.39.4
         with:
           sarif_file: trivy-results.sarif
           category: trivy-image
+
+      - name: Upload Dockerfile results to code scanning
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: github/codeql-action/upload-sarif@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4.39.4
+        with:
+          sarif_file: trivy-config.sarif
+          category: trivy-config
