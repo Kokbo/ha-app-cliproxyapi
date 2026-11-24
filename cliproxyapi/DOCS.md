@@ -234,6 +234,12 @@ add-on lands on `main`, a workflow
 bumps the add-on patch version and [CHANGELOG.md](CHANGELOG.md), so installed
 add-ons are offered the rebuild.
 
+The built image is scanned daily with Trivy
+([image-scan.yaml](../.github/workflows/image-scan.yaml)) for known
+vulnerabilities in its Alpine packages and in the Go modules compiled into
+CLIProxyAPI. Findings with a fix available show up under **Security → Code
+scanning**; they don't fail any build.
+
 ### By hand
 
 From a checkout of this repo:
