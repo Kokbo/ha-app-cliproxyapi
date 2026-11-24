@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: update-upstream
@@ -20,15 +20,18 @@ jobs:
   bump:
     name: Bump upstream version
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # pushes the temporary bump branch
     outputs:
       latest: ${{ steps.update.outputs.latest }}
       base: ${{ steps.push.outputs.base }}
       sha: ${{ steps.push.outputs.sha }}
       branch: ${{ steps.push.outputs.branch }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: main
+          ref: main # zizmor: ignore[artipacked] this job pushes with git
 
       - name: Look for a newer upstream release
         id: update
@@ -69,7 +72,7 @@ jobs:
     if: needs.bump.outputs.sha != ''
     permissions:
       contents: read
-    uses: ./.github/workflows/ci.yaml
+    uses: ./.github/workflows/ci.yaml # zizmor: ignore[self-repository] same-commit reusable workflow
     with:
       ref: ${{ needs.bump.outputs.sha }}
 
@@ -78,15 +81,18 @@ jobs:
     needs: [bump, test]
     if: needs.test.result == 'success'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # pushes to main and deletes the bump branch
     env:
       BASE: ${{ needs.bump.outputs.base }}
       SHA: ${{ needs.bump.outputs.sha }}
       BRANCH: ${{ needs.bump.outputs.branch }}
       LATEST: ${{ needs.bump.outputs.latest }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ needs.bump.outputs.sha }}
+          ref: ${{ needs.bump.outputs.sha }} # zizmor: ignore[artipacked] this job pushes with git
           # git only pushes a fast-forward when it has main's tip and the
           # history linking it to SHA; a shallow checkout fails with "fetch first".
           fetch-depth: 0

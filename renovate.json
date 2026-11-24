@@ -6,19 +6,33 @@
     "schedule:weekly"
   ],
   "platformAutomerge": false,
+  "customManagers": [
+    {
+      "description": "Versions in workflows marked with a '# renovate: datasource=... depName=...' comment on the line above (e.g. the zizmor version).",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+)\\s*\\n\\s*[\\w-]+: \"?(?<currentValue>[^\"\\s]+)\"?"
+      ]
+    }
+  ],
   "packageRules": [
     {
-      "description": "One weekly PR for all GitHub Actions updates; wait 3 days after a release so a hijacked tag can be caught before it lands.",
+      "description": "One weekly PR for all GitHub Actions and workflow tool updates; wait 3 days after a release so a hijacked tag can be caught before it lands.",
       "matchManagers": [
-        "github-actions"
+        "github-actions",
+        "custom.regex"
       ],
       "groupName": "GitHub Actions",
       "minimumReleaseAge": "3 days"
     },
     {
-      "description": "Automerge low-risk Actions updates once CI (lint, shellcheck, build + health check on both arches) passes.",
+      "description": "Automerge low-risk Actions and workflow tool updates once CI (lint, shellcheck, build + health check on both arches, zizmor) passes.",
       "matchManagers": [
-        "github-actions"
+        "github-actions",
+        "custom.regex"
       ],
       "matchUpdateTypes": [
         "minor",
