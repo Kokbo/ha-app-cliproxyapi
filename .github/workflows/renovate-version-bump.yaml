@@ -15,12 +15,15 @@ on:
       - "cliproxyapi/**"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   bump:
     name: Bump add-on version
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # pushes the version bump to main
     steps:
       - name: Find the merged Renovate PR
         id: pr
@@ -44,10 +47,10 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "Renovate PR #$number: $title"
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: steps.pr.outputs.number != ''
         with:
-          ref: main
+          ref: main # zizmor: ignore[artipacked] this job pushes with git
           fetch-depth: 0
 
       - name: Bump version and push to main

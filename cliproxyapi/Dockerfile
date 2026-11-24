@@ -74,6 +74,8 @@ RUN chmod +x \
 EXPOSE 8317 7681
 
 # Supervisor's watchdog restarts the add-on when this turns unhealthy.
+# Shell form on purpose: `|| exit 1` maps any curl failure to 1 (2 is reserved).
+# hadolint ignore=DL3025
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD curl -fsS -o /dev/null http://127.0.0.1:8317/healthz || exit 1
 

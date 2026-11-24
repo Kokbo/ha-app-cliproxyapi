@@ -1,0 +1,7 @@
+# hadolint config for cliproxyapi/Dockerfile (run in CI by ci.yaml).
+ignored:
+  # Alpine packages are deliberately unpinned: the runtime stage runs
+  # `apk upgrade` so each build picks up Alpine's security fixes, and the
+  # builder stage isn't shipped. Pinned versions would go stale and break
+  # builds once Alpine drops them from the mirror.
+  - DL3018

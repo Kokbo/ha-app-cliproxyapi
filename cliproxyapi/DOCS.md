@@ -240,6 +240,11 @@ vulnerabilities in its Alpine packages and in the Go modules compiled into
 CLIProxyAPI. Findings with a fix available show up under **Security → Code
 scanning**; they don't fail any build.
 
+The workflows themselves are checked with
+[zizmor](https://docs.zizmor.sh/) ([zizmor.yaml](../.github/workflows/zizmor.yaml))
+and actionlint, and the Dockerfile with hadolint (both in CI). Every action is
+pinned to a commit SHA; Renovate keeps the pins current.
+
 ### By hand
 
 From a checkout of this repo:
