@@ -12,6 +12,10 @@ with a web terminal in the sidebar for logging in to providers.
 The image is built on your device from upstream source; the first install
 takes several minutes. See the **Documentation** tab for setup and security.
 
+The icon is the CLIProxyAPI logo by
+[Router-For.ME](https://github.com/router-for-me) (from
+[EasyCLIProxyAPI](https://github.com/router-for-me/EasyCLIProxyAPI), MIT).
+
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 [upstream-shield]: https://img.shields.io/github/v/release/router-for-me/CLIProxyAPI?label=upstream

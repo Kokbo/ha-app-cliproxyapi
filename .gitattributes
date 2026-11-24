@@ -8,3 +8,6 @@ Dockerfile text eol=lf
 **/services.d/**/run text eol=lf
 **/services.d/**/finish text eol=lf
 **/usr/local/bin/* text eol=lf
+
+# Images (add-on icon/logo)
+*.png binary
