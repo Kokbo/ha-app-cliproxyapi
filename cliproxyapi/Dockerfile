@@ -4,7 +4,7 @@
 # BUILD_FROM is the multi-platform HA base image (formerly build_from in the
 # deprecated build.yaml). BUILD_ARCH (amd64 / aarch64) is passed by the
 # Supervisor and by CI.
-ARG BUILD_FROM=ghcr.io/home-assistant/base:3.22
+ARG BUILD_FROM=ghcr.io/home-assistant/base:3.24
 ARG BUILD_ARCH
 ARG CLIPROXYAPI_VERSION=v8.1.1
 ARG BUILD_DATE=unknown
