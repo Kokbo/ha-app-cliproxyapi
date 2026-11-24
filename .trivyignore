@@ -1,0 +1,7 @@
+# Trivy ignore list (read from the repo root by image-scan.yaml).
+
+# DS-0002 "Image user should not be 'root'": Home Assistant add-ons run as
+# root by design. The base image's s6-overlay init (/init) needs root, and the
+# Supervisor sandboxes the container (AppArmor, no host network, only the
+# mapped /config and /data). Not fixable in this repo.
+DS-0002
