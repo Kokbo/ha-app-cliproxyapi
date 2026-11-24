@@ -222,6 +222,18 @@ Run workflow**). A newer upstream release gets its own branch and is tried
 anyway. If `main` moved while the run was going, the branch is deleted and the
 next run retries on its own.
 
+### Other dependencies
+
+[Renovate](https://docs.renovatebot.com/) ([renovate.json](../renovate.json))
+opens weekly PRs for the Docker images (Go toolchain, Home Assistant base
+image, Dockerfile syntax) and the GitHub Actions used by the workflows. Actions
+updates and image patch/digest updates merge on their own once CI passes;
+minor image updates wait for review. When a Renovate PR that changes the
+add-on lands on `main`, a workflow
+([renovate-version-bump.yaml](../.github/workflows/renovate-version-bump.yaml))
+bumps the add-on patch version and [CHANGELOG.md](CHANGELOG.md), so installed
+add-ons are offered the rebuild.
+
 ### By hand
 
 From a checkout of this repo:

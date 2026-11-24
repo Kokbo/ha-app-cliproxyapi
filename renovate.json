@@ -1,6 +1,44 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    "schedule:weekly"
+  ],
+  "platformAutomerge": false,
+  "packageRules": [
+    {
+      "description": "One weekly PR for all GitHub Actions updates; wait 3 days after a release so a hijacked tag can be caught before it lands.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "GitHub Actions",
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Automerge low-risk Actions updates once CI (lint, shellcheck, build + health check on both arches) passes.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pin",
+        "pinDigest"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Automerge Docker image patch/digest updates. Minor bumps (Go toolchain, HA base/Alpine) stay manual.",
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "digest"
+      ],
+      "automerge": true
+    }
   ]
 }
