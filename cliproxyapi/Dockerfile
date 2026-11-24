@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1.29
 
 # Global ARGs — declared before any FROM so they are usable in FROM lines.
 # BUILD_FROM is the multi-platform HA base image (formerly build_from in the
