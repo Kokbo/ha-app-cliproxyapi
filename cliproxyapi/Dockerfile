@@ -50,7 +50,7 @@ FROM ${BUILD_FROM}
 LABEL \
     org.opencontainers.image.title="Home Assistant App: CLIProxyAPI" \
     org.opencontainers.image.description="OpenAI/Claude-compatible API proxy for OAuth subscriptions, with an ingress auth shell" \
-    org.opencontainers.image.source="https://github.com/Kokbo/ha-addon-cliproxyapi"
+    org.opencontainers.image.source="https://github.com/Kokbo/ha-app-cliproxyapi"
 
 # apk upgrade: the base image's packages are as old as the base image release;
 # upgrading pulls Alpine's security fixes (openssl, krb5, ...) at build time.

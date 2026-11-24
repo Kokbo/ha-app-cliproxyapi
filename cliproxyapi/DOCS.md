@@ -28,7 +28,7 @@ local CLIProxyAPI install:
 ## Installation
 
 1. In Home Assistant, **Settings → Apps → App store**, three-dot menu →
-   **Repositories**. Add `https://github.com/Kokbo/ha-addon-cliproxyapi`, or
+   **Repositories**. Add `https://github.com/Kokbo/ha-app-cliproxyapi`, or
    copy the parent directory into `/addons/` and use **Check for updates**.
 2. Open **CLIProxyAPI** and click **Install**. The first build clones and
    compiles the upstream Go server from source; budget several minutes on a
