@@ -18,7 +18,7 @@ ARG BUILD_DATE=unknown
 # BUILD_ARCH (aarch64 / amd64) is mapped to GOARCH below.
 # Global ARGs go out of scope at FROM, so we re-declare the ones we need.
 # -----------------------------------------------------------------------------
-FROM golang:1.26-alpine AS builder
+FROM golang:1.27-alpine AS builder
 
 ARG CLIPROXYAPI_VERSION
 ARG BUILD_ARCH
