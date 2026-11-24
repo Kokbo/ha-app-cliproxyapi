@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10
+
+- Upgrade the Alpine packages from the base image at build time (`apk upgrade`), picking up security fixes for openssl, krb5 and libxml2 that the base image release predates.
+
 ## 0.3.9
 
 - Update golang Docker tag to v1.27 ([#12](https://github.com/Kokbo/ha-app-cliproxyapi/pull/12)).

@@ -52,10 +52,13 @@ LABEL \
     org.opencontainers.image.description="OpenAI/Claude-compatible API proxy for OAuth subscriptions, with an ingress auth shell" \
     org.opencontainers.image.source="https://github.com/Kokbo/ha-addon-cliproxyapi"
 
+# apk upgrade: the base image's packages are as old as the base image release;
+# upgrading pulls Alpine's security fixes (openssl, krb5, ...) at build time.
 # ttyd: in-addon web terminal for OAuth bootstrap (exposed via HA ingress).
 # bash:  cliproxy-shell entrypoint.
 # nginx: fronts ttyd so only the HA ingress proxy (172.30.32.2) can reach it.
-RUN apk add --no-cache ttyd bash nginx
+RUN apk upgrade --no-cache \
+    && apk add --no-cache ttyd bash nginx
 
 COPY --from=builder /out/CLIProxyAPI /usr/bin/CLIProxyAPI
 COPY cliproxyapi.example.yaml /usr/share/cliproxyapi/config.example.yaml
