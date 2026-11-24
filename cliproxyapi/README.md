@@ -12,7 +12,7 @@ with a web terminal in the sidebar for logging in to providers.
 The image is built on your device from upstream source; the first install
 takes several minutes. See the **Documentation** tab for setup and security.
 
-The icon is the CLIProxyAPI logo by
+The icon and logo use the CLIProxyAPI logo by
 [Router-For.ME](https://github.com/router-for-me) (from
 [EasyCLIProxyAPI](https://github.com/router-for-me/EasyCLIProxyAPI), MIT).
 
