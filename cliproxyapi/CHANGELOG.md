@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.9
+
+- Update golang Docker tag to v1.27 ([#12](https://github.com/Kokbo/ha-app-cliproxyapi/pull/12)).
+
 ## 0.3.8
 
 - Update the Home Assistant base image to `ghcr.io/home-assistant/base:3.24`
