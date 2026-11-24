@@ -6,7 +6,7 @@ description: >-
   OpenAI/Claude-compatible HTTP API on port 8317 for Claude, Codex, Gemini,
   Grok/xAI, and other providers, with an in-addon web
   terminal (HA ingress) for OAuth bootstrap.
-url: "https://github.com/Kokbo/ha-addon-cliproxyapi/tree/main/cliproxyapi"
+url: "https://github.com/Kokbo/ha-app-cliproxyapi/tree/main/cliproxyapi"
 arch:
   - aarch64
   - amd64
