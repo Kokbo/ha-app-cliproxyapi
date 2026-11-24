@@ -1,0 +1,89 @@
+name: Version bump after Renovate
+
+# Home Assistant builds this add-on from the repo and only rebuilds it when
+# `version` in config.yaml changes. Renovate doesn't bump it, so when a
+# Renovate PR that changes the add-on lands on main (automerged or merged by
+# hand), this bumps the patch version, adds a CHANGELOG entry and pushes that
+# straight to main. CI already ran on the PR with the same add-on files.
+#
+# Pushes made with GITHUB_TOKEN don't trigger workflows, so this can't loop.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "cliproxyapi/**"
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    name: Bump add-on version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find the merged Renovate PR
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          pr="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '
+            [.[] | select(.merged_at != null and (.head.ref | startswith("renovate/")))]
+            | first // empty | [.number, .html_url, .title] | @tsv')"
+          if [ -z "$pr" ]; then
+            echo "Not a Renovate merge; nothing to do."
+            exit 0
+          fi
+          IFS=$'\t' read -r number url title <<< "$pr"
+          {
+            echo "number=$number"
+            echo "url=$url"
+            echo "title=$title"
+          } >> "$GITHUB_OUTPUT"
+          echo "Renovate PR #$number: $title"
+
+      - uses: actions/checkout@v7
+        if: steps.pr.outputs.number != ''
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Bump version and push to main
+        if: steps.pr.outputs.number != ''
+        env:
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+          NUMBER: ${{ steps.pr.outputs.number }}
+          URL: ${{ steps.pr.outputs.url }}
+          TITLE: ${{ steps.pr.outputs.title }}
+        run: |
+          version_at() {
+            git show "$1:cliproxyapi/config.yaml" | sed -nE 's/^version: "?([^"]+)"?$/\1/p'
+          }
+          old="$(version_at "$BEFORE")"
+          new="$(version_at "$SHA")"
+          if [ "$old" != "$new" ]; then
+            echo "The PR already changed the version ($old -> $new); nothing to do."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Redo the bump on main's current tip each attempt, so a concurrent
+          # push (another Renovate merge, the upstream update) never conflicts.
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            version="$(.github/scripts/bump-addon-version.sh "$TITLE ([#$NUMBER]($URL)).")"
+            git commit -q -a -m "Bump add-on to $version for #$NUMBER" -m "$TITLE"
+            if git push origin HEAD:refs/heads/main; then
+              echo "main is now add-on $version"
+              exit 0
+            fi
+            echo "::warning::push rejected (main moved), retrying ($attempt/5)"
+            sleep $((attempt * 5))
+          done
+          echo "::error::could not push the version bump for #$NUMBER"
+          exit 1

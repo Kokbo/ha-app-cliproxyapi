@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.8
+
+- Update the Home Assistant base image to `ghcr.io/home-assistant/base:3.24`
+  ([#10](https://github.com/Kokbo/ha-app-cliproxyapi/pull/10)) and the
+  Dockerfile syntax to 1.29
+  ([#9](https://github.com/Kokbo/ha-app-cliproxyapi/pull/9)). Both were merged
+  without a version bump, so installed add-ons had not been rebuilt with them.
+- Dependency updates from Renovate now bump the add-on version automatically.
+
 ## 0.3.7
 
 - Update CLIProxyAPI to [v8.1.1](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.1.1) ([changes since v8.1.0](https://github.com/router-for-me/CLIProxyAPI/compare/v8.1.0...v8.1.1)).
