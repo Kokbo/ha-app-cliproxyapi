@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.11
+
+- Update CLIProxyAPI to [v8.1.2](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.1.2) ([changes since v8.1.1](https://github.com/router-for-me/CLIProxyAPI/compare/v8.1.1...v8.1.2)).
+
 ## 0.3.10
 
 - Upgrade the Alpine packages from the base image at build time (`apk upgrade`), picking up security fixes for openssl, krb5 and libxml2 that the base image release predates.
