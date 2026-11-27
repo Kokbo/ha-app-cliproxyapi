@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.14
+
+- Update CLIProxyAPI to [v8.1.7](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.1.7) ([changes since v8.1.6](https://github.com/router-for-me/CLIProxyAPI/compare/v8.1.6...v8.1.7)).
+
 ## 0.3.13
 
 - Update CLIProxyAPI to [v8.1.6](https://github.com/router-for-me/CLIProxyAPI/releases/tag/v8.1.6) ([changes since v8.1.3](https://github.com/router-for-me/CLIProxyAPI/compare/v8.1.3...v8.1.6)).
